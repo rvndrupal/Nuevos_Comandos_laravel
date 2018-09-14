@@ -204,6 +204,81 @@ public function setNameAttribute($value)
 
 ############################################################################
 
+############################################################################
+RELACIONES DE BASES DE DATOS
+############################################################################
+
+############################################################################
+ONE TO ONE -> UNO A UNO
+
+ONE TO MANY ->UNO A MUCHOS
+
+MANY TO MANY -> ,MUCHOS A MUCHOS
+
+HAS MANY THROUGH  -> TIENE MUCHOS ATRAVEZ DE  
+
+POLYMORPHIC RELATIONS  ->RELACIONES POLIMORFICAS 
+
+
+ONE TO ONE
+
+
+php artisan make:migration create_users_table
+
+php artisan make:migration create_addreses_table
+
+
+users 
+
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->string('password');
+
+addreses 
+    $table->integer('user_id')->unsigned();
+    $table->foreign('user_id')->references('id')->on('users');    
+    $table->string('name');
+    $table->string('country');
+
+
+Modelo user
+
+    public function address(){
+        return $this->hasOne(Addreses::class); //buscara una llave forania llamada user_id por default o 
+
+        return $this->hasOne(Addreses::class ,'usuarios'); //de ejemplo y se le pasa el campo con el que se va a relacionar
+    }
+
+    
+
+    COMO MOSTRARLO EN LA APLICACIÓN
+
+    $user=User::findOrFail(1);
+
+    return $user->address;
+
+########### Como se aplica la inversa ####################### 
+
+
+Modelo Address 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+Como lo usamos
+
+    $direccion=Address::findOrFail(1);
+
+    return $direccion->user;
+
+
+
+############################################################################
+
+video 26 terminado
+
 
 
 </pre>
