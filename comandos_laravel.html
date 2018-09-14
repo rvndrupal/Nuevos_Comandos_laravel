@@ -60,7 +60,75 @@ $producto=Product::create($request->only('name','ap','dir'));
 
 ############################################################################
 
+############################################################################
+Para mostrar metodo show 
+public function show(Product $product)
+{
+    //dd($product->id);
+    return view('products.show', compact('product'));
+}
 
+Edit 
+public function edit(Product $product)
+    {
+        
+        return view('products.edit', compact('product'));
+    }
+############################################################################
+
+############################################################################
+Para Update 
+
+public function update(Request $request, Product $product)
+    {
+        $product->update($request->all());
+        return redirect()->route('products.edit', $product->id)
+        ->with('info','Producto actualizado con exito');
+
+    }
+
+Borrar 
+public function destroy(Product $product)
+{
+    $product->delete();
+    return back()->with('info','Eliminado Correctamente');
+}
+############################################################################
+
+############################################################################
+BORRADO SUAVE DE UNA BASE SOFTDELETES
+
+IMPORTAR EN EL MODELO 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+https://rimorsoft.com/borrado-logico-metodo-softdeletes-en-laravel
+
+en el MODELO se pone 
+
+  ->  use SoftDeletes;
+
+
+En la migración se pone 
+ ->  $table->softDeletes(); //Nueva línea, para el borrado lógico
+
+se crea la migracion normalmente.
+
+Cómo acceder a los registros que han sido borrados de forma lógica
+Veamos el listado de métodos:
+
+$product->trashed(); Este sería el método papelera, y así podrás acceder al registro borrado.
+$products = Product::withTrashed()->get(); Así incluimos en una consulta a los registros que están en la papelera.
+$products = Product::onlyTrashed()->get(); Así consultarías solo los registros borrados de forma lógica.
+$product->restore();Así, como puedes imaginar, restauras un registro, en otras palabras vuelves a null la columna deleted_at.
+$product->forceDelete(); Oh. Esto es borrado físico, aquí dices adiós definitivamente al registro.
+Laravel hace de esta función algo muy sencillo, lo puedes implementar en las tablas que gustes en cuestión de minutos.
+
+
+$post::withTrashed()->findorFail($id)->restore(); restaura el registro  de nuevo a null
+
+$post::withTrashed()->findorFail($id)->forceDelete();  borra el registro definitivamente
+
+############################################################################
 
 
 
