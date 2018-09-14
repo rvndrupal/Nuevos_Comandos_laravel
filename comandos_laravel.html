@@ -8,16 +8,57 @@ Quitar los timestap
 dento del modelo poner  ->  public $timestamps=false;
 ############################################################################
 
+############################################################################
+Proteger los campos en el modelo 
+protected $fillable = [
+     'name',
+     'ap',
+     'dir',
+     ];
+############################################################################
+
 
 ############################################################################
 Buscar en un index
 
 $post=Post::all();  busca toods los campos
 
+$products=Product::paginate();
 
 ############################################################################
 
+############################################################################
+Para el create
+public function create()
+    {
+        return view('products.create');
+    }
+############################################################################
 
+
+############################################################################
+Inserta en store
+
+$post=new Post;
+
+$post->name=$request->name,
+$post->ap=$request->ap
+
+$post->save();
+
+//segunda forma la mejor
+
+Post::create([
+    'name'=>$request->name,
+    'ap'=>$request->ap,
+    'dir'=>$request->dir
+]);
+
+$product=Product::create($request->all());
+
+$producto=Product::create($request->only('name','ap','dir'));
+
+############################################################################
 
 
 
