@@ -130,6 +130,80 @@ $post::withTrashed()->findorFail($id)->forceDelete();  borra el registro definit
 
 ############################################################################
 
+############################################################################
+DEFINIR NUESTRAS PROPIAS CONSULTA QUERYS SCOPES
+
+Ejemplo devolver todos los post donde la columna active sea uno 
+
+    $post=Post::where('active',1)->get();
+
+Creando en query scope
+
+En el modelo que corresponda sea hace lo siguiente 
+
+    public function scopeActive($consulta) se crea la funcion active
+    {
+        return $consulta->where('active','1');
+    }
+
+    Ahora la consulta quedaria
+
+    $post=Post::active()->get();  solo se le pasa el nombre en minusculas sin el scope
+
+    Otro Ejemplo
+
+    public function scopePopular($consulta)
+    {
+        return $consulta->where('vistas','>','1000');
+    }
+
+
+    $post::Post::active()->popular()->get();
+
+    o tambien podria quedar 
+
+    public function scopePopular($consulta, $cantidad)
+    {
+        return $consulta->where('vistas','>',$cantidad);
+    }
+
+    $post::Post::active()->popular(200)->get();
+   
+
+############################################################################
+
+############################################################################
+ACCESSORS  & MUTATORS
+
+Estando en el modelo
+
+public function getNameAttribute($value)
+{
+    return strtoupper($value);
+    
+    //con esto todos los campos que tengan la variable name  pasaran a mayusculas 
+}
+
+public function getDescriptionAttribute($value)
+{
+    return strtolower($value); // el campo descripción esta en minusculas 
+}
+
+
+###############  Para los mutadores ######################  
+
+public function setNameAttribute($value)
+{
+    $this->attributes['name']= ucwords($value);  
+    
+    //con esto cualquier campo con el nombre name 
+    //al momento de insertar en la base de datos pasara hacer  la primer letra a mayusculas
+}
+
+
+
+############################################################################
+
 
 
 </pre>
