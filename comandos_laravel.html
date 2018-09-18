@@ -277,8 +277,60 @@ Como lo usamos
 
 ############################################################################
 
-video 26 terminado
+############################################################################
+ONE TO MAY   UNO A MUCHOS
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+        Opcional
+        return $this->hasMany(Post::class,'Llave_foranea a relacionar');
+    }
+
+    En la migración de post queda
+
+    $table->integer('user_id')->unsigned();
+    $table->foreign('user_id')->references('id')->on('users');
+
+    ##mostrando los campos cargados
+
+    $user=User::findOrFail(1);//busca el id numero 1
+
+    Ejecuto la relacion
+
+    $user->posts;  //con esto se trai todos los campos del post
+
+    
+    ############ Para los post quedaria asi ######################33
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    ### consulta
+
+    $post=Post::all();
+
+    $post->user; //se trai la relacion con esto
+    
+
+    Obtener solo un atributo 
+    bueno, ya logre solventar el problema,
+    $user->post->select('title')->get();
+
+
+############################################################################
+
+############################################################################
+Canal del slack del Curso
+
+https://cursodelaravel.slack.com/messages/C93E7LRUN/
+
+
+############################################################################
 
 
 
-</pre>
+</pre>s
