@@ -332,5 +332,78 @@ https://cursodelaravel.slack.com/messages/C93E7LRUN/
 ############################################################################
 
 
+############################################################################
+MANY TO MANY   MUCHOS A MUCHOS
+
+USERS Y ROLES 
+
+    ### crear la tabla pivot 
+    php artisan make:migration  create_role_user_table   // recordar en orden alfabetico
+
+
+    ## tabla pivot
+
+    $tabla->integer('role_id')->unsigned();
+    $tabla->integer('user_id')->unsigned();
+
+    $tabla->foreign('role_id')->references('id')->on('roles');
+    $tabla->foreign('user_id')->references('id')->on('users');
+
+    
+    #### Modelo User 
+
+    public function roles()
+    {
+        $this->belongstoMany(Role::class); 
+        //Opcional
+        $this->belongstoMany(Role::class,'asignar_roles','clave_foranea'); //busca la tabla asignar_roles
+        //ver la imagen para ver todas las opciones
+        
+    }
+
+    ## Mostrar los resultados
+
+    $user=User::findOrFail(1);
+
+    return  $user->roles;
+
+
+    ### Modelo Role 
+
+    public function users()
+    {
+        $this->belongstoMany(User::class); 
+    }
+
+
+    ## Mostrar resultados
+
+    $role=Role::findOrFail(1);
+
+    $role->users;
+
+    ## muy importante aqui es donde viene el attach
+
+    $user=User::findOrFail(1);
+
+    $user->roles()->attach(1); // se le dice que al usuario 1 se le adjunte el rol 1
+
+
+    ## como se podria quitar un valor 
+
+    $user=User::findOrFail(1);
+
+    $user->roles()->detach(2); //al usuario 1 se le esta quitando el rol 2
+
+    ### Para sincronizar y no duplicar los roles
+
+    $user=User::findOrFail(1);
+
+    $user->roles()->sync(1); //con esto lo actualiza solament no lo duplica
+
+
+############################################################################
+
+
 
 </pre>s
