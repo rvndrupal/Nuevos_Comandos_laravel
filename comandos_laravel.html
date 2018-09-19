@@ -404,6 +404,47 @@ USERS Y ROLES
 
 ############################################################################
 
+############################################################################
+Relacion HAS MANY THROUGH  -> TIENE MUCHOS ATARVEZ DE 
+
+    Relación a Distancia
+    Un usuario puede tener muchos post y un pais puede tener muchos usuarios y un usuario 
+    un solo pais. la tabla que conecta es la tabla intermedia.
+    ver la imagen.
+
+    ### Tabla User
+
+    $table->integer('country_id')->unsigned();
+    $table->foreign('country_id')->references('id')->on('countries');
+
+    ### Post 
+
+    $table->integer('user_id')->unsigned();
+    $table->foreign('user_id')->references('id')->on('users');
+
+
+    ## Modelo country
+
+    public function posts()
+    {
+        return $this->hasManyTrough(Post::class , User::class);  //un pais puede tener muchos post  atravez de Users.
+    }
+
+    ## Como se muestra.
+
+    $country=Country::find(1);
+
+    return $country->posts;  //con esto se llaman
+
+
+############################################################################
+
+############################################################################
+Relaciones Polimorficas cuando varios modelos comparten una tabla ejemplo
+
+    modelo video, musica, artistas, eventos tienen en comun una tbla llamada comentarios.
+############################################################################
+
 
 
 </pre>s
