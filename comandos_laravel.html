@@ -447,4 +447,148 @@ Relaciones Polimorficas cuando varios modelos comparten una tabla ejemplo
 
 
 
-</pre>s
+############################################################################
+Comando de INFYOM PARA GENERAR CRUD 
+
+1.- Crear un modelo 
+php artisan infyom:scaffold Ponente
+
+nombre string text  campo 
+
+para una relacion queda
+
+ejemplo relacionar con ponencias con ponentes
+
+ponente_id integer:unsigned:foreign,ponentes,id select   -->  se relaciona con ponentes y va a mostrar campo select
+
+al mostrar 
+
+$ponencia->ponente->nombre  --> manda error 
+
+$ponencia->ponente['nombre']  --> asi es correcto  por que los regresa como un arreglo
+
+############################################################################
+
+############################################################################
+Crear factory imagen
+
+$factory->define(App\Alumno::class, function (Faker $faker) {
+    return [
+        'nombre'=> $faker->sentence,
+        'apellidos'=> $faker->sentence,
+        'foto'=> $faker->imageUrl($width=1200, $height=400),
+    ];
+});
+
+PARA CREARLOS 
+
+EN DATBASE SEEDER 
+
+factory(Alumno::class, 10)->create();
+############################################################################
+
+
+############################################################################
+COMANDOS Y COMENTARIOS DEL CURSO DEL BLOG AVANZADO
+############################################################################
+
+############################################################################
+Para crear Factorias.
+
+'name'=> $faker->sentence,
+'description'=> $faker->paragraph
+
+'user_id'=> \App\User::all()->random()->id,
+
+
+
+Utilizarlo ->  factory(\App\Post::class, 30)->create();
+
+############################################################################
+
+############################################################################
+Nueva manera de poner una Ruta 
+
+Route::view('/','wellcome');
+
+Route::get('/','PostController@index')->name('home');
+
+############################################################################
+
+############################################################################
+Obtener valores dentro de Controlador
+
+$forum=Forum::all();
+
+$forum=Forum::latest()->paginate(10);  //ordenar por el ultimo
+
+
+############################################################################
+
+############################################################################
+Para poder traducir las cadenas 
+
+    {{ __("texto a cambiar") }}
+############################################################################
+
+############################################################################
+Utilizar el forelse 
+
+    @forelse($forums as $forum)
+
+        {{ $forum->name }}
+
+    @empty
+
+    {{ __("No hay registros") }}
+
+    @endforelse
+############################################################################
+
+############################################################################
+Definir las Relaciones del curso. 
+
+protected $fillable =['nombre','direccion'];
+
+
+Un Foro tiene muchos post 
+
+public function posts()
+{
+    return $this->hasMany(Post::class, 'post_id');  //con clave foranea  hasMany  tiene muchos
+}
+
+Inversa 
+
+##este post tiene un foro
+public function forum()
+{
+    return $this->belongsTo(Forum::class, 'forum_id');
+}
+
+
+#########  MUY IMPORTANTE   ######################
+
+public function show(Forum $forum)
+{
+    $post=$forum->posts()->with(['owner'])->paginate(2);  Un foro contiene muchos post y estos post contiene un owner (Usuario);
+
+    return view('forums.detail',compact('forum','post'));
+}
+
+
+
+############################################################################
+
+
+############################################################################
+Instalar Laravel Debugbar
+
+composer require barryvdh/laravel-debugbar --dev
+
+
+############################################################################
+
+
+
+</pre>
